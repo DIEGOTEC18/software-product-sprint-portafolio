@@ -96,6 +96,15 @@ body {
     font-family: "Trebuchet MS", Helvetica, sans-serif;
     font-size: 17px;
     color: whitesmoke;
+    text-decoration: none;
+    cursor: pointer;
+
+}
+
+.nav-button:hover {
+
+    background-color: grey;
+    font-weight: bold;
 
 }
 
@@ -110,7 +119,7 @@ body {
 .title {
 
     text-align: center;
-    margin-bottom: 0;
+    margin-bottom: 15px;
     font-family: "Lucida Console";
     color: rgb(31, 31, 31);
     font-size: 3vw;
@@ -165,7 +174,6 @@ body {
     .title {
 
         text-align: center;
-        margin-bottom: 0;
         font-family: "Lucida Console";
         color: rgb(31, 31, 31);
         font-size: 30px;
@@ -183,6 +191,8 @@ body {
 .carousel {
 
     width: 100%;
+    margin-top: 50px;
+    margin-bottom: 50px;
 
 }
 
@@ -205,5 +215,169 @@ body {
     padding: 5px;
     margin: 15px;
     background-color: rgb(31, 31, 31);
+
+}
+
+.menu-item-image {
+
+    max-width: 100%;
+
+}
+
+.menu-item-date {
+
+    text-align: center;
+    font-family: "Lucida Console";
+    color: whitesmoke;
+    font-size: 15px;
+    margin-top: 0;
+
+}
+
+.menu-item-text {
+
+    text-align: center;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    color:ghostwhite;
+    font-size: 20px;
+    white-space: normal;
+
+}
+
+#drone-pic {
+
+    margin-left: 30%;
+    margin-right: auto;
+
+}
+
+#dataWuki-pic {
+
+    margin-left: 18%;
+    margin-right: auto;
+
+}
+
+.menu-item-icon {
+
+    margin-left: 30%;
+    margin-right: auto;
+    max-width: 40%;
+
+}
+
+#gallery-launch {
+
+    width: 100%
+
+}
+
+.gallery-legend {
+
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-size: 20px;
+    color: rgb(31, 31, 31);
+
+}
+
+#center-gif {
+
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#camera-icon {
+
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+    transition: 0.2s;
+
+}
+
+#camera-icon:hover {
+
+    transform: scale(1.5);
+
+}
+
+.main-footer {
+
+    background-color: rgb(31, 31, 31);
+    display: flex;
+    width: 100%;
+    max-height: 200px;
+    margin-top: 50px;
+
+}
+
+.footer-element {
+
+    display: flex;
+    margin: 15px;
+
+}
+
+.footer-text {
+
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-size: 17px;
+    color: whitesmoke;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 5px;
+
+}
+
+.footer-icon {
+
+    max-width: 100%;
+    cursor: pointer;
+
+}
+
+.flaticon {
+
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-size: 10px;
+    color: whitesmoke;
+    margin-top: auto;
+    margin-bottom: 0;
+
+}
+
+#icon-credit {
+
+    margin-top: auto;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: 0;
+
+}
+
+#footer-email {
+
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-size: 17px;
+    color: whitesmoke;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 5px;
+
+}
+
+@media screen and (max-width: 830px){
+
+    .footer-text {
+
+        display: none;
+
+    }
 
 }
