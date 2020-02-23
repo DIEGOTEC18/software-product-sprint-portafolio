@@ -17,8 +17,6 @@
  */
 function addRandomGreeting() {
 
-    console.log("It enters the function.");
-
   const greetings =
       ['IM IN', 'Lets do this', '你好，世界！', 'Hee Hee'];
 

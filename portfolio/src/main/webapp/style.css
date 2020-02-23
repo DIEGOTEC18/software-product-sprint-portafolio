@@ -59,11 +59,27 @@ body {
 
 }
 
-#hello-top {
+.white-text {
+
+    color: ghostwhite;
+
+}
+
+.lucida {
 
     font-family: "Lucida Console";
+
+}
+
+.trebuchet {
+
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+
+}
+
+#hello-top {
+
     font-weight: bold;
-    color: ghostwhite;
     font-size: 3vw;
     margin-bottom: 15px;
     margin-top: auto;
@@ -72,8 +88,6 @@ body {
 
 #hello-bottom {
 
-    font-family: "Lucida Console";
-    color: ghostwhite;
     font-weight: lighter;
     font-size: 6vw;
     margin-top: 15px;
@@ -93,9 +107,7 @@ body {
 .nav-button {
 
     padding: 12px;
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
     font-size: 17px;
-    color: whitesmoke;
     text-decoration: none;
     cursor: pointer;
 
@@ -120,7 +132,6 @@ body {
 
     text-align: center;
     margin-bottom: 15px;
-    font-family: "Lucida Console";
     color: rgb(31, 31, 31);
     font-size: 3vw;
 
@@ -148,7 +159,6 @@ body {
     margin-top: auto;
     margin-bottom: auto;
     margin-left: 0;
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
     font-size: 20px;
     color: rgb(31, 31, 31);
 
@@ -174,7 +184,6 @@ body {
     .title {
 
         text-align: center;
-        font-family: "Lucida Console";
         color: rgb(31, 31, 31);
         font-size: 30px;
 
@@ -227,8 +236,6 @@ body {
 .menu-item-date {
 
     text-align: center;
-    font-family: "Lucida Console";
-    color: whitesmoke;
     font-size: 15px;
     margin-top: 0;
 
@@ -237,8 +244,6 @@ body {
 .menu-item-text {
 
     text-align: center;
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
-    color:ghostwhite;
     font-size: 20px;
     white-space: normal;
 
@@ -277,7 +282,6 @@ body {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
     font-size: 20px;
     color: rgb(31, 31, 31);
 
@@ -326,9 +330,7 @@ body {
 
 .footer-text {
 
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
     font-size: 17px;
-    color: whitesmoke;
     margin-top: auto;
     margin-bottom: auto;
     margin-left: 5px;
@@ -344,9 +346,7 @@ body {
 
 .flaticon {
 
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
     font-size: 10px;
-    color: whitesmoke;
     margin-top: auto;
     margin-bottom: 0;
 
@@ -363,9 +363,7 @@ body {
 
 #footer-email {
 
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
     font-size: 17px;
-    color: whitesmoke;
     margin-top: auto;
     margin-bottom: auto;
     margin-left: 5px;
@@ -375,6 +373,12 @@ body {
 @media screen and (max-width: 830px){
 
     .footer-text {
+
+        display: none;
+
+    }
+
+    .flaticon {
 
         display: none;
 
