@@ -27,3 +27,13 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+function getHelloMessage(){
+
+    fetch("/data").then(response => response.text()).then((HelloMessage) => {
+
+        document.getElementById("message-zone").innerHTML = HelloMessage;
+
+    })
+
+}
