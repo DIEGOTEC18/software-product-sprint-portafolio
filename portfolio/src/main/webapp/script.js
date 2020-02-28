@@ -28,11 +28,23 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-function getHelloMessage(){
+// Fetches a JSON with messages from the server, creates elements with the messages and adds them to the DOM:
+function getMessages(){
 
-    fetch("/data").then(response => response.text()).then((HelloMessage) => {
+    fetch("/data").then(response => response.json()).then((messages) => {
 
-        document.getElementById("message-zone").innerHTML = HelloMessage;
+        //Iterates the JSON by keys:
+        for(var key in messages){
+
+            //Creates an element 'p' with the current message as the inner text and appends it as a child:
+            const messageZone = document.getElementById("message-zone");
+            var messageElement = document.createElement('p');
+            messageElement.innerText = messages[key];
+            messageElement.className = "trebuchet";
+
+            messageZone.appendChild(messageElement);
+
+        }
 
     })
 
