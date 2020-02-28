@@ -34,12 +34,12 @@ function getMessages(){
     fetch("/data").then(response => response.json()).then((messages) => {
 
         //Iterates the JSON by keys:
-        for(var key in messages){
+        for(let message of messages){
 
             //Creates an element 'p' with the current message as the inner text and appends it as a child:
             const messageZone = document.getElementById("message-zone");
-            var messageElement = document.createElement('p');
-            messageElement.innerText = messages[key];
+            let messageElement = document.createElement('p');
+            messageElement.innerText = message;
             messageElement.className = "trebuchet";
 
             messageZone.appendChild(messageElement);
