@@ -28,24 +28,45 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-// Fetches a JSON with messages from the server, creates elements with the messages and adds them to the DOM:
-function getMessages(){
+// Fetches a JSON with comments from the server, creates elements with the comments and adds them to the DOM:
+function getComments(){
 
-    fetch("/data").then(response => response.json()).then((messages) => {
+    fetch("/data").then(response => response.json()).then((comments) => {
 
         //Iterates the JSON by keys:
-        for(let message of messages){
+        for(let comment of comments){
 
-            //Creates an element 'p' with the current message as the inner text and appends it as a child:
-            const messageZone = document.getElementById("message-zone");
-            let messageElement = document.createElement('p');
-            messageElement.innerText = message;
-            messageElement.className = "trebuchet";
+            //Creates a div that displays the comment with its atributes and adds it to the DOM:
+            const commentZone = document.getElementById("comment-zone");
 
-            messageZone.appendChild(messageElement);
+            let currentCommentElement = commentElement(comment.username, comment.message, comment.date);
+
+            commentZone.appendChild(currentCommentElement);
 
         }
 
     })
+
+}
+
+function commentElement(username, message, date){
+
+    let divElement = document.createElement('div');
+    let commentHeader = document.createElement('div');
+    let userHead = document.createElement('a');
+    let dateHead = document.createElement('a');
+    let commentText = document.createElement('p');
+
+    userHead.text = username;
+    dateHead.text = date;
+    commentText.innerText = message;
+
+    commentHeader.appendChild(userHead);
+    commentHeader.appendChild(dateHead);
+
+    divElement.appendChild(commentHeader);
+    divElement.appendChild(commentText);
+
+    return divElement;
 
 }

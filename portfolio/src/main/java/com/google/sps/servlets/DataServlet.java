@@ -14,6 +14,7 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.data.Comment;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,29 +27,38 @@ import com.google.gson.Gson;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-    private ArrayList<String> messages;
+    private ArrayList<Comment> comments = new ArrayList<Comment>();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        //Adds messages to the ArrayList:
-        messages = new ArrayList<String>();
-        messages.add("This is the first message.");
-        messages.add("This is the second message.");
-        messages.add("This is the third message.");
-
-        String json = toJsonString(messages);
+        String json = toJsonString(comments);
 
         response.setContentType("application/json;");
         response.getWriter().println(json);
 
   }
 
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        String username = request.getParameter("username");
+        String message = request.getParameter("message");
+
+        Comment currentComment = new Comment(username, message);
+
+        comments.add(currentComment);
+
+        // Redirect back to the HTML page.
+        response.sendRedirect("/index.html");
+
+    }
+
     //Converts the ArrayList to JSON using GSON:
-    private String toJsonString(ArrayList<String> messageList){
+    private String toJsonString(ArrayList<Comment> commentList){
 
         Gson gson = new Gson();
-        String json = gson.toJson(messageList);
+        String json = gson.toJson(commentList);
         return json;
 
     }

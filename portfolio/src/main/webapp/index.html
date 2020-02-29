@@ -9,7 +9,7 @@
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
     <script src="script.js"></script>
   </head>
-  <body onload = "getMessages()">
+  <body onload = "getComments()">
 
     <header class = "index-header">
 
@@ -193,9 +193,27 @@
 
     <div id = "message-div">
 
-        <h3 class = "title lucida">Messages:</h3>
+        <h3 class = "title lucida">Comments:</h3>
 
-        <div id = "message-zone"></div>
+        <form action = "/data" method = "post">
+        
+            <h4>Username:</h4>
+
+            <input type = "text" name = "username" maxlength = "15">
+
+                <br><br>
+
+            <h4>Comment:</h4>
+
+            <input type = "text" name = "message" maxlength = "140">
+
+                <br><br>
+
+            <input type = "submit">
+        
+        </form>
+
+        <div id = "comment-zone"></div>
 
     </div>
 
