@@ -18,6 +18,9 @@ import com.google.sps.data.Comment;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,10 +34,26 @@ import com.google.gson.Gson;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-    private ArrayList<Comment> comments = new ArrayList<Comment>();
-
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Query query = new Query("Comment").addSort("username", SortDirection.DESCENDING);
+    
+        PreparedQuery results = datastore.prepare(query);
+
+        ArrayList<Comment> comments = new ArrayList<Comment>();
+        for(Entity entity : results.asIterable()){
+
+            String username = (String) entity.getProperty("username");
+            String message = (String) entity.getProperty("message");
+            String date = (String) entity.getProperty("date");
+
+            Comment current = new Comment(username, message, date);
+
+            comments.add(current);
+
+        }
 
         String json = toJsonString(comments);
 
@@ -51,10 +70,6 @@ public class DataServlet extends HttpServlet {
         String username = request.getParameter("username");
         String message = request.getParameter("message");
         String date = messageDate.toString();
-
-        Comment currentComment = new Comment(username, message);
-
-        comments.add(currentComment);
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 

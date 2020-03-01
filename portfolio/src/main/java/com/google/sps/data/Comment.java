@@ -1,7 +1,5 @@
 package com.google.sps.data;
 
-import java.time.LocalDate;
-
 public class Comment {
 
     private String username;
@@ -13,20 +11,16 @@ public class Comment {
 
         username = "UNKNOWN";
         message = "No comment";
-
-        LocalDate messageDate = LocalDate.now();
-        date = messageDate.toString();
+        date = "No date available";
 
     }
 
     //Class constructor with parameters:
-    public Comment(String username, String message){
+    public Comment(String username, String message, String date){
 
         this.username = username;
         this.message = message;
-
-        LocalDate messageDate = LocalDate.now();
-        date = messageDate.toString();
+        this.date = date;
 
     }
 
