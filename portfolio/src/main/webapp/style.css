@@ -436,6 +436,15 @@ body {
     font-weight: bold;
     padding: 10px;
     font-size: 15px;
+    cursor: pointer;
+
+}
+
+#comment-submit:hover {
+
+    background-color: grey;
+    padding: 15px;
+    box-shadow: 10px 10px 8px 0 rgba(0, 0, 0, 0.1);
 
 }
 
