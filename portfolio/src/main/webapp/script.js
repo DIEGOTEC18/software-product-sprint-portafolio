@@ -53,6 +53,8 @@ function commentElement(username, message, date){
 
     let divElement = document.createElement('div');
     let commentHeader = document.createElement('div');
+    let dateDiv = document.createElement('div');
+    let textDiv = document.createElement('div');
     let userHead = document.createElement('a');
     let dateHead = document.createElement('a');
     let commentText = document.createElement('p');
@@ -61,11 +63,22 @@ function commentElement(username, message, date){
     dateHead.text = date;
     commentText.innerText = message;
 
+    dateDiv.className = "comment-date-div";
+    textDiv.className = "comment-text-div";
+    divElement.className = "comment-div";
+    commentHeader.className = "comment-header";
+    userHead.className = "trebuchet comment-username";
+    dateHead.className = "trebuchet comment-date";
+    commentText.className = "trebuchet comment-text";
+
+    dateDiv.appendChild(dateHead);
+    textDiv.appendChild(commentText);
+
     commentHeader.appendChild(userHead);
-    commentHeader.appendChild(dateHead);
+    commentHeader.appendChild(dateDiv);
 
     divElement.appendChild(commentHeader);
-    divElement.appendChild(commentText);
+    divElement.appendChild(textDiv);
 
     return divElement;
 

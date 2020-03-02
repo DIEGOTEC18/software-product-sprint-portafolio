@@ -195,23 +195,27 @@
 
         <h3 class = "title lucida">Comments:</h3>
 
-        <form action = "/data" method = "post">
-        
-            <h4>Username:</h4>
+        <div id = "form-div">
 
-            <input type = "text" name = "username" maxlength = "15">
+            <form action = "/data" method = "post" id = "comment-form">
+            
+                <h4 class = "trebuchet">Username:</h4>
 
-                <br><br>
+                <input type = "text" name = "username" maxlength = "15" id = "username-input" class = "trebuchet" placeholder = "Your username">
 
-            <h4>Comment:</h4>
+                    <br><br>
 
-            <input type = "text" name = "message" maxlength = "140">
+                <h4 class = "trebuchet">Comment:</h4>
 
-                <br><br>
+                <input type = "text" name = "message" maxlength = "140" placeholder = "Tell me what you think!" id = "comment-input">
 
-            <input type = "submit">
-        
-        </form>
+                    <br><br>
+
+                <input type = "submit" value = "Submit comment!" id = "comment-submit" class = "lucida">
+            
+            </form>
+
+        </div>
 
         <div id = "comment-zone"></div>
 
