@@ -394,16 +394,136 @@ body {
 
 }
 
-#message-zone {
+#form-div {
+
+    max-width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+
+}
+
+#username-input {
+
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(31, 31, 31);
+    width: 25%;
+    margin-bottom: 10px;
+
+}
+
+#comment-input {
+
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-right-color: rgb(31, 31, 31);
+    border-bottom-color: rgb(31, 31, 31);
+    margin-bottom: 10px;
+    width: 100%;
+
+}
+
+#comment-submit {
+
+    background-color: rgb(31, 31, 31);
+    border-style: none;
+    color: ghostwhite;
+    font-weight: bold;
+    padding: 10px;
+    font-size: 15px;
+    cursor: pointer;
+
+}
+
+#comment-submit:hover {
+
+    background-color: grey;
+    padding: 15px;
+    box-shadow: 10px 10px 8px 0 rgba(0, 0, 0, 0.1);
+
+}
+
+#comment-zone {
 
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+    max-height: 500px;
+    overflow-y: auto;
 
 }
 
-.message-text{
+.comment-username {
 
-    
+    background-color: rgb(31, 31, 31);
+    color: ghostwhite;
+    margin-left: 0;
+    margin-right: auto;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 7px;
+
+}
+
+.comment-date {
+
+    color: dimgrey;
+    margin-left: auto;
+    margin-right: 0;
+    font-size: 14px;
+    margin-top: auto;
+    margin-bottom: 0;
+
+}
+
+.comment-text {
+
+    color: rgb(31, 31, 31);
+    text-align: left;
+    font-size: 18px;
+    box-shadow: 10px 10px 8px 0 rgba(0, 0, 0, 0.1);
+    padding: 15px;
+
+}
+
+.comment-div {
+
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+
+.comment-header {
+
+    max-width: 50%;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+
+}
+
+.comment-date-div {
+
+    margin-left: auto;
+    margin-right: 0;
+    margin-top: auto;
+    margin-bottom: 0;
+
+}
+
+.comment-text-div {
+
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
 
 }

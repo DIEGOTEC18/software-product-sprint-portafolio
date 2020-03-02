@@ -28,24 +28,58 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-// Fetches a JSON with messages from the server, creates elements with the messages and adds them to the DOM:
-function getMessages(){
+// Fetches a JSON with comments from the server, creates elements with the comments and adds them to the DOM:
+function getComments(){
 
-    fetch("/data").then(response => response.json()).then((messages) => {
+    fetch("/data").then(response => response.json()).then((comments) => {
 
         //Iterates the JSON by keys:
-        for(var key in messages){
+        for(let comment of comments){
 
-            //Creates an element 'p' with the current message as the inner text and appends it as a child:
-            const messageZone = document.getElementById("message-zone");
-            var messageElement = document.createElement('p');
-            messageElement.innerText = messages[key];
-            messageElement.className = "trebuchet";
+            //Creates a div that displays the comment with its atributes and adds it to the DOM:
+            const commentZone = document.getElementById("comment-zone");
 
-            messageZone.appendChild(messageElement);
+            let currentCommentElement = commentElement(comment.username, comment.message, comment.date);
+
+            commentZone.appendChild(currentCommentElement);
 
         }
 
     })
+
+}
+
+function commentElement(username, message, date){
+
+    let divElement = document.createElement('div');
+    let commentHeader = document.createElement('div');
+    let dateDiv = document.createElement('div');
+    let textDiv = document.createElement('div');
+    let userHead = document.createElement('a');
+    let dateHead = document.createElement('a');
+    let commentText = document.createElement('p');
+
+    userHead.text = username;
+    dateHead.text = date;
+    commentText.innerText = message;
+
+    dateDiv.className = "comment-date-div";
+    textDiv.className = "comment-text-div";
+    divElement.className = "comment-div";
+    commentHeader.className = "comment-header";
+    userHead.className = "trebuchet comment-username";
+    dateHead.className = "trebuchet comment-date";
+    commentText.className = "trebuchet comment-text";
+
+    dateDiv.appendChild(dateHead);
+    textDiv.appendChild(commentText);
+
+    commentHeader.appendChild(userHead);
+    commentHeader.appendChild(dateDiv);
+
+    divElement.appendChild(commentHeader);
+    divElement.appendChild(textDiv);
+
+    return divElement;
 
 }
