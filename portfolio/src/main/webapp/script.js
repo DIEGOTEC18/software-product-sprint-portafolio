@@ -39,7 +39,7 @@ function getComments(){
             //Creates a div that displays the comment with its atributes and adds it to the DOM:
             const commentZone = document.getElementById("comment-zone");
 
-            let currentCommentElement = commentElement(comment.username, comment.message, comment.date);
+            const currentCommentElement = commentElement(comment.username, comment.message, comment.date);
 
             commentZone.appendChild(currentCommentElement);
 

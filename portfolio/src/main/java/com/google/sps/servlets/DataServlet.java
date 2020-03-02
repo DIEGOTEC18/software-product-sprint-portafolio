@@ -37,11 +37,14 @@ public class DataServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        //Get an instance of datastore and prepare a query of the comments sorted by date:
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Query query = new Query("Comment").addSort("date", SortDirection.DESCENDING);
     
+        //Query the datastore and get the result with the comments:
         PreparedQuery results = datastore.prepare(query);
 
+        //Create and ArrayList that stores Comment objects created with the properties form the entities that where queried from the datastore:
         ArrayList<Comment> comments = new ArrayList<Comment>();
         for(Entity entity : results.asIterable()){
 
@@ -55,6 +58,7 @@ public class DataServlet extends HttpServlet {
 
         }
 
+        //Create a JSON from the ArrayList and send it as a response:
         String json = toJsonString(comments);
 
         response.setContentType("application/json;");
@@ -71,15 +75,19 @@ public class DataServlet extends HttpServlet {
         String message = request.getParameter("message");
         String date = messageDate.toString();
 
+        //Prevents users from posting empty comments by checking the length of the username and message Strings:
         if(username.length() > 1 && message.length() > 1){
 
+            //Get a datastore instance:
             DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
+            //Create a Comment Entity with the values of the request:
             Entity commentEntity = new Entity("Comment");
             commentEntity.setProperty("username", username);
             commentEntity.setProperty("message", message);
             commentEntity.setProperty("date", date);
 
+            //PUT the Entity in the datastore:
             datastore.put(commentEntity);
 
         }
