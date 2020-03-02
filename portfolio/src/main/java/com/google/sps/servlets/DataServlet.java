@@ -38,7 +38,7 @@ public class DataServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Query query = new Query("Comment").addSort("username", SortDirection.DESCENDING);
+        Query query = new Query("Comment").addSort("date", SortDirection.DESCENDING);
     
         PreparedQuery results = datastore.prepare(query);
 
@@ -71,14 +71,18 @@ public class DataServlet extends HttpServlet {
         String message = request.getParameter("message");
         String date = messageDate.toString();
 
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        if(username.length() > 1 && message.length() > 1){
 
-        Entity commentEntity = new Entity("Comment");
-        commentEntity.setProperty("username", username);
-        commentEntity.setProperty("message", message);
-        commentEntity.setProperty("date", date);
+            DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-        datastore.put(commentEntity);
+            Entity commentEntity = new Entity("Comment");
+            commentEntity.setProperty("username", username);
+            commentEntity.setProperty("message", message);
+            commentEntity.setProperty("date", date);
+
+            datastore.put(commentEntity);
+
+        }
 
         // Redirect back to the HTML page.
         response.sendRedirect("/index.html");
