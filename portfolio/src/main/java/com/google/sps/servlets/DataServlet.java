@@ -37,6 +37,10 @@ import com.google.gson.Gson;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+    private static final double NEUTRAL_THRESHOLD = 0.1;
+    private static final double SLIGHTLY_THRESHOLD = 0.4;
+    private static final double VERY_THRESHOLD = 0.8;
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -66,7 +70,7 @@ public class DataServlet extends HttpServlet {
         //Create a JSON from the ArrayList and send it as a response:
         String json = toJsonString(comments);
 
-        //It needs to specify its encoded in UTF-8 so the JSON parcer in the client can recognize the emojis:
+        //It needs to specify its encoded in UTF-8 so the JSON parser in the client can recognize the emojis:
         response.setContentType("application/json; charset=utf-8");
         response.getWriter().println(json);
 
@@ -84,22 +88,8 @@ public class DataServlet extends HttpServlet {
         //Prevents users from posting empty comments by checking the length of the username and message Strings:
         if(username.length() > 1 && message.length() > 1){
 
-            //Analise sentiment of the comment:
-
-            //Create a text document containing the message text:
-            Document commentDoc = Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
-
-            //Intantiate a Language Service Client:
-            LanguageServiceClient languageService = LanguageServiceClient.create();
-
-            //Create a sentiment object with the analyzed text document:
-            Sentiment sentiment = languageService.analyzeSentiment(commentDoc).getDocumentSentiment();
-
-            //Get the sentiment score (Negative -1.0 to 1.0 Positive):
-            float score = sentiment.getScore();
-
-            //Close connection to the Language Service Client:
-            languageService.close();
+            //Get the sentiment score:
+            float score = getCommentSentiment(message);
 
             //Get emoji based on score:
 
@@ -116,7 +106,7 @@ public class DataServlet extends HttpServlet {
             commentEntity.setProperty("score", score);
             commentEntity.setProperty("emoji", emoji);
 
-            //PUT the Entity in the datastore:
+            //Put the Entity in the datastore:
             datastore.put(commentEntity);
 
         }
@@ -135,21 +125,44 @@ public class DataServlet extends HttpServlet {
 
     }
 
+    private float getCommentSentiment(String message) throws IOException {
+
+        //Analise sentiment of the comment:
+
+         //Create a text document containing the message text:
+        Document commentDoc = Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
+
+        //Intantiate a Language Service Client:
+        LanguageServiceClient languageService = LanguageServiceClient.create();
+
+        //Create a sentiment object with the analyzed text document:
+        Sentiment sentiment = languageService.analyzeSentiment(commentDoc).getDocumentSentiment();
+
+        //Get the sentiment score (Negative -1.0 to 1.0 Positive):
+        float score = sentiment.getScore();
+
+        //Close connection to the Language Service Client:
+        languageService.close();
+
+        return score;
+
+    }
+
     private String emojify(float score){
 
-        if(score >= -0.1 && score <= 0.1){
+        if(score >= -NEUTRAL_THRESHOLD && score <= NEUTRAL_THRESHOLD){
 
             //Neutral
             return "😐";
 
-        } else if(score > 0.1){ 
+        } else if(score > NEUTRAL_THRESHOLD){ 
             
-            if(score > 0.1 && score <= 0.4){
+            if(score > NEUTRAL_THRESHOLD && score <= SLIGHTLY_THRESHOLD){
 
                 //Slightly poitive
                 return "🙂";
 
-            } else if(score > 0.4 && score <= 0.8){
+            } else if(score > SLIGHTLY_THRESHOLD && score <= VERY_THRESHOLD){
 
                 //Positive
                 return "😄";
@@ -163,12 +176,12 @@ public class DataServlet extends HttpServlet {
 
         } else {
 
-            if(score >= -0.4){
+            if(score >= -SLIGHTLY_THRESHOLD){
 
                 //Slightly negative
                 return "🤨";
 
-            } else if(score < -0.4 && score >= -0.8){
+            } else if(score < -SLIGHTLY_THRESHOLD && score >= -VERY_THRESHOLD){
 
                 //Negative
                 return "☹️";

@@ -62,11 +62,13 @@ function commentElement(username, message, date, score, emoji){
     let commentText = document.createElement('p');
     let commentFooter = document.createElement('div');
     let commentScore = document.createElement('a');
+    let commentEmoji = document.createElement('a');
 
     userHead.text = username;
     dateHead.text = date;
     commentText.innerText = message;
-    commentScore.text = score + emoji;
+    commentScore.text = "Positivity score: " + score.toFixed(2);
+    commentEmoji.text = emoji;
 
     dateDiv.className = "comment-date-div";
     textDiv.className = "comment-text-div";
@@ -75,12 +77,16 @@ function commentElement(username, message, date, score, emoji){
     userHead.className = "trebuchet comment-username";
     dateHead.className = "trebuchet comment-date";
     commentText.className = "trebuchet comment-text";
+    commentFooter.className = "comment-footer";
+    commentScore.className = "comment-score trebuchet white-text";
+    commentEmoji.className = "comment-emoji";
 
     dateDiv.appendChild(dateHead);
     textDiv.appendChild(commentText);
 
     commentHeader.appendChild(userHead);
     commentHeader.appendChild(dateDiv);
+    commentFooter.appendChild(commentEmoji);
     commentFooter.appendChild(commentScore);
 
     divElement.appendChild(commentHeader);

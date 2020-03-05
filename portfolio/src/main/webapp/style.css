@@ -488,6 +488,7 @@ body {
     font-size: 18px;
     box-shadow: 10px 10px 8px 0 rgba(0, 0, 0, 0.1);
     padding: 15px;
+    margin-bottom: 0;
 
 }
 
@@ -525,5 +526,34 @@ body {
     max-width: 50%;
     margin-left: auto;
     margin-right: auto;
+
+}
+
+.comment-footer {
+
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+
+}
+
+.comment-score {
+
+    font-size: 11px;
+    padding: 11px;
+    background-color: dimgrey;
+    height: fit-content;
+    margin-top: auto;
+    margin-bottom: auto;
+    box-shadow: 10px 10px 8px 0 rgba(0, 0, 0, 0.1);
+
+}
+
+.comment-emoji {
+
+    font-size: 25px;
+    padding-right: 10px;
+    margin-left: auto;
 
 }
