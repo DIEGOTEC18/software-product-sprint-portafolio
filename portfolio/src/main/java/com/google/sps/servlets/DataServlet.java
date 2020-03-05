@@ -15,6 +15,9 @@
 package com.google.sps.servlets;
 
 import com.google.sps.data.Comment;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -51,8 +54,9 @@ public class DataServlet extends HttpServlet {
             String username = (String) entity.getProperty("username");
             String message = (String) entity.getProperty("message");
             String date = (String) entity.getProperty("date");
+            double score = (double) entity.getProperty("score");
 
-            Comment current = new Comment(username, message, date);
+            Comment current = new Comment(username, message, date, score);
 
             comments.add(current);
 
@@ -78,6 +82,23 @@ public class DataServlet extends HttpServlet {
         //Prevents users from posting empty comments by checking the length of the username and message Strings:
         if(username.length() > 1 && message.length() > 1){
 
+            //Analise sentiment of the comment:
+
+            //Create a text document containing the message text:
+            Document commentDoc = Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
+
+            //Intantiate a Language Service Client:
+            LanguageServiceClient languageService = LanguageServiceClient.create();
+
+            //Create a sentiment object with the analyzed text document:
+            Sentiment sentiment = languageService.analyzeSentiment(commentDoc).getDocumentSentiment();
+
+            //Get the sentiment score (Negative -1.0 to 1.0 Positive):
+            float score = sentiment.getScore();
+
+            //Close connection to the Language Service Client:
+            languageService.close();
+
             //Get a datastore instance:
             DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
@@ -86,6 +107,7 @@ public class DataServlet extends HttpServlet {
             commentEntity.setProperty("username", username);
             commentEntity.setProperty("message", message);
             commentEntity.setProperty("date", date);
+            commentEntity.setProperty("score", score);
 
             //PUT the Entity in the datastore:
             datastore.put(commentEntity);
