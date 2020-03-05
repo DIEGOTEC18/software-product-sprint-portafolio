@@ -54,9 +54,10 @@ public class DataServlet extends HttpServlet {
             String username = (String) entity.getProperty("username");
             String message = (String) entity.getProperty("message");
             String date = (String) entity.getProperty("date");
+            String emoji = (String) entity.getProperty("emoji");
             double score = (double) entity.getProperty("score");
 
-            Comment current = new Comment(username, message, date, score);
+            Comment current = new Comment(username, message, date, score, emoji);
 
             comments.add(current);
 
@@ -65,7 +66,8 @@ public class DataServlet extends HttpServlet {
         //Create a JSON from the ArrayList and send it as a response:
         String json = toJsonString(comments);
 
-        response.setContentType("application/json;");
+        //It needs to specify its encoded in UTF-8 so the JSON parcer in the client can recognize the emojis:
+        response.setContentType("application/json; charset=utf-8");
         response.getWriter().println(json);
 
   }
@@ -99,6 +101,10 @@ public class DataServlet extends HttpServlet {
             //Close connection to the Language Service Client:
             languageService.close();
 
+            //Get emoji based on score:
+
+            String emoji = emojify(score);
+
             //Get a datastore instance:
             DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
@@ -108,6 +114,7 @@ public class DataServlet extends HttpServlet {
             commentEntity.setProperty("message", message);
             commentEntity.setProperty("date", date);
             commentEntity.setProperty("score", score);
+            commentEntity.setProperty("emoji", emoji);
 
             //PUT the Entity in the datastore:
             datastore.put(commentEntity);
@@ -125,6 +132,55 @@ public class DataServlet extends HttpServlet {
         Gson gson = new Gson();
         String json = gson.toJson(commentList);
         return json;
+
+    }
+
+    private String emojify(float score){
+
+        if(score >= -0.1 && score <= 0.1){
+
+            //Neutral
+            return "😐";
+
+        } else if(score > 0.1){ 
+            
+            if(score > 0.1 && score <= 0.4){
+
+                //Slightly poitive
+                return "🙂";
+
+            } else if(score > 0.4 && score <= 0.8){
+
+                //Positive
+                return "😄";
+
+            } else {
+
+                //Very positive
+                return "😍";
+
+            }
+
+        } else {
+
+            if(score >= -0.4){
+
+                //Slightly negative
+                return "🤨";
+
+            } else if(score < -0.4 && score >= -0.8){
+
+                //Negative
+                return "☹️";
+
+            } else {
+
+                //Very negative
+                return "😡";
+
+            }
+
+        }
 
     }
 

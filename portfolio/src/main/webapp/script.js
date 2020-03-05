@@ -39,7 +39,7 @@ function getComments(){
             //Creates a div that displays the comment with its atributes and adds it to the DOM:
             const commentZone = document.getElementById("comment-zone");
 
-            const currentCommentElement = commentElement(comment.username, comment.message, comment.date, comment.score);
+            const currentCommentElement = commentElement(comment.username, comment.message, comment.date, comment.score, comment.emoji);
 
             commentZone.appendChild(currentCommentElement);
 
@@ -49,7 +49,7 @@ function getComments(){
 
 }
 
-function commentElement(username, message, date, score){
+function commentElement(username, message, date, score, emoji){
 
     //This can be optimized:
 
@@ -66,7 +66,7 @@ function commentElement(username, message, date, score){
     userHead.text = username;
     dateHead.text = date;
     commentText.innerText = message;
-    commentScore.text = score;
+    commentScore.text = score + emoji;
 
     dateDiv.className = "comment-date-div";
     textDiv.className = "comment-text-div";
