@@ -39,7 +39,7 @@ function getComments(){
             //Creates a div that displays the comment with its atributes and adds it to the DOM:
             const commentZone = document.getElementById("comment-zone");
 
-            let currentCommentElement = commentElement(comment.username, comment.message, comment.date);
+            const currentCommentElement = commentElement(comment.username, comment.message, comment.date, comment.score, comment.emoji);
 
             commentZone.appendChild(currentCommentElement);
 
@@ -49,7 +49,9 @@ function getComments(){
 
 }
 
-function commentElement(username, message, date){
+function commentElement(username, message, date, score, emoji){
+
+    //This can be optimized:
 
     let divElement = document.createElement('div');
     let commentHeader = document.createElement('div');
@@ -58,10 +60,15 @@ function commentElement(username, message, date){
     let userHead = document.createElement('a');
     let dateHead = document.createElement('a');
     let commentText = document.createElement('p');
+    let commentFooter = document.createElement('div');
+    let commentScore = document.createElement('a');
+    let commentEmoji = document.createElement('a');
 
     userHead.text = username;
     dateHead.text = date;
     commentText.innerText = message;
+    commentScore.text = "Positivity score: " + score.toFixed(2);
+    commentEmoji.text = emoji;
 
     dateDiv.className = "comment-date-div";
     textDiv.className = "comment-text-div";
@@ -70,15 +77,21 @@ function commentElement(username, message, date){
     userHead.className = "trebuchet comment-username";
     dateHead.className = "trebuchet comment-date";
     commentText.className = "trebuchet comment-text";
+    commentFooter.className = "comment-footer";
+    commentScore.className = "comment-score trebuchet white-text";
+    commentEmoji.className = "comment-emoji";
 
     dateDiv.appendChild(dateHead);
     textDiv.appendChild(commentText);
 
     commentHeader.appendChild(userHead);
     commentHeader.appendChild(dateDiv);
+    commentFooter.appendChild(commentEmoji);
+    commentFooter.appendChild(commentScore);
 
     divElement.appendChild(commentHeader);
     divElement.appendChild(textDiv);
+    divElement.appendChild(commentFooter);
 
     return divElement;
 

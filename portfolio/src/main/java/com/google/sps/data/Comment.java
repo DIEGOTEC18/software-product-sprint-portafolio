@@ -5,6 +5,8 @@ public class Comment {
     private String username;
     private String message;
     private String date;
+    private String emoji;
+    private double score;
 
     //Default class constructor:
     public Comment(){
@@ -12,15 +14,18 @@ public class Comment {
         username = "UNKNOWN";
         message = "No comment";
         date = "No date available";
+        emoji = ";|";
 
     }
 
     //Class constructor with parameters:
-    public Comment(String username, String message, String date){
+    public Comment(String username, String message, String date, double score, String emoji){
 
         this.username = username;
         this.message = message;
         this.date = date;
+        this.score = score;
+        this.emoji = emoji;
 
     }
 
@@ -44,6 +49,18 @@ public class Comment {
 
     }
 
+    public double getScore(){
+
+        return score;
+
+    }
+
+    public String getEmoji(){
+
+        return emoji;
+
+    }
+
     public void setUsername(String username){
 
         this.username = username;
@@ -53,6 +70,18 @@ public class Comment {
     public void setMessage(String message){
 
         this.message = message;
+
+    }
+
+    public void setScore(double score){
+
+        this.score = score;
+
+    }
+
+    public void setEmoji(String emoji){
+
+        this.emoji = emoji;
 
     }
 
