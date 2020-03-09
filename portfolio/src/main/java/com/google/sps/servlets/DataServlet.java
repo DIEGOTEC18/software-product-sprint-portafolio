@@ -24,6 +24,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -82,7 +84,8 @@ public class DataServlet extends HttpServlet {
         LocalDate messageDate = LocalDate.now();
 
         String username = request.getParameter("username");
-        String message = request.getParameter("message");
+        //Sanitize user input with Jsoup. Cleans user input from any <html> tag. Leaves any plain text intact:
+        String message = Jsoup.clean(request.getParameter("message"), Whitelist.none());
         String date = messageDate.toString();
 
         //Prevents users from posting empty comments by checking the length of the username and message Strings:
