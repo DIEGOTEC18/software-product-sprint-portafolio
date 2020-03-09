@@ -88,9 +88,6 @@ public class DataServlet extends HttpServlet {
         String message = Jsoup.clean(request.getParameter("message"), Whitelist.none());
         String date = messageDate.toString();
 
-        System.out.println("-------------------->");
-        System.out.println(message);
-
         //Prevents users from posting empty comments by checking the length of the username and message Strings:
         if(username.length() > 1 && message.length() > 1){
 
