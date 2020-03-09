@@ -84,7 +84,7 @@ public class DataServlet extends HttpServlet {
         LocalDate messageDate = LocalDate.now();
 
         String username = request.getParameter("username");
-        //Sanitize user input with Jsoup. Cleans user input from any <html> tag:
+        //Sanitize user input with Jsoup. Cleans user input from any <html> tag. Leaves any plain text intact:
         String message = Jsoup.clean(request.getParameter("message"), Whitelist.none());
         String date = messageDate.toString();
 
