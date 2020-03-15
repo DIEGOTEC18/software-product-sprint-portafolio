@@ -14,10 +14,86 @@
 
 package com.google.sps;
 
+import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+import java.util.HashSet;
 
 public final class FindMeetingQuery {
+
+//This should return a List<TimeRange> of all the possible TimeRange meetings:
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+
+    ArrayList<TimeRange> possibleTimes = new ArrayList<TimeRange>();
+
+    long requestDuration = request.getDuration();
+    Collection<String> requestAtt = request.getAttendees();
+
+    //Print the requirenments:
+    System.out.println("----------->");
+    System.out.println("REQUEST:");
+    System.out.println("duration: " + requestDuration);
+    System.out.println("attendees:");
+    for(String attendee : requestAtt){
+
+        System.out.println(attendee);
+
+    }
+
+    //If the request has no attendees, return the whole day:
+    if(requestAtt.isEmpty()){
+
+        System.out.println("There are no attendees.");
+        return Arrays.asList(TimeRange.WHOLE_DAY);
+
+    }
+
+    //Check for meetings that are longer than a day:
+    if(requestDuration > TimeRange.WHOLE_DAY.duration()){
+
+        System.out.println("The requested time is longer than a day.");
+        //Return an empty list:
+        //return Arrays.asList();
+        return possibleTimes;
+
+    }
+
+    //Check every event and split the day into different possible times for the meeting before and after the events:
+    for(Event currentEvent : events){
+
+        TimeRange when = currentEvent.getWhen();
+        Set<String> attendees = currentEvent.getAttendees();
+
+        for(String currentAttendee : requestAtt){
+
+            if(attendees.contains(currentAttendee)){
+
+                TimeRange possibleBefore = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, when.start(), false);
+                TimeRange possibleAfter = TimeRange.fromStartEnd(when.end(), TimeRange.END_OF_DAY, true);
+
+                if(!possibleTimes.contains(possibleBefore)){
+
+                    possibleTimes.add(possibleBefore);
+
+                }
+
+                if(!possibleTimes.contains(possibleAfter)){
+
+                    possibleTimes.add(possibleAfter);
+
+                }
+
+            }
+
+        }
+
+    }
+
+    //throw new UnsupportedOperationException("TODO: Implement this method.");
+
+    return possibleTimes;
+
   }
 }
