@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -61,8 +62,27 @@ public final class FindMeetingQuery {
     }
 
     //Check every event and split the day into different possible times for the meeting before and after the events:
-    for(Event currentEvent : events){
+    Iterator<Event> iterator = events.iterator();
 
+    //I know this index shouldn't exist:
+    int index = 0;
+
+    int lastEventEnd = TimeRange.START_OF_DAY;
+
+    while (iterator.hasNext()) {
+
+        Event currentEvent = iterator.next();
+
+        System.out.println(">-------------<");
+        System.out.println("Index: " + index);
+        System.out.println(currentEvent.getWhen().start());
+
+        /*if(iterator.hasNext()){
+
+            System.out.println(iterator.next().getWhen().start());
+
+        }*/
+        
         TimeRange when = currentEvent.getWhen();
         Set<String> attendees = currentEvent.getAttendees();
 
@@ -70,20 +90,34 @@ public final class FindMeetingQuery {
 
             if(attendees.contains(currentAttendee)){
 
-                TimeRange possibleBefore = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, when.start(), false);
-                TimeRange possibleAfter = TimeRange.fromStartEnd(when.end(), TimeRange.END_OF_DAY, true);
+                //Check if you can allocate one before:
+                if(when.start() - lastEventEnd >= requestDuration){
 
-                if(!possibleTimes.contains(possibleBefore)){
-
+                    TimeRange possibleBefore = TimeRange.fromStartEnd(lastEventEnd, when.start(), false);
                     possibleTimes.add(possibleBefore);
 
                 }
 
-                if(!possibleTimes.contains(possibleAfter)){
+                //Check if its the last one of the day:
+                if(!iterator.hasNext()){
 
-                    possibleTimes.add(possibleAfter);
+                    if(TimeRange.END_OF_DAY - when.end() >= requestDuration){
+
+                        TimeRange possibleAfter = TimeRange.fromStartEnd(when.end(), TimeRange.END_OF_DAY, true);
+                        possibleTimes.add(possibleAfter);
+
+                    }
+
+                } else {
+
+                    //Its not the last one of the day:
+                    lastEventEnd = when.end();
 
                 }
+
+                index++;
+
+                break;
 
             }
 
