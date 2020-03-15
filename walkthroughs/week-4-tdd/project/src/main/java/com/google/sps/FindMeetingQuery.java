@@ -66,8 +66,8 @@ public final class FindMeetingQuery {
 
     //I know this index shouldn't exist:
     int index = 0;
-
     int lastEventEnd = TimeRange.START_OF_DAY;
+    boolean shareAttendees = false;
 
     while (iterator.hasNext()) {
 
@@ -89,6 +89,8 @@ public final class FindMeetingQuery {
         for(String currentAttendee : requestAtt){
 
             if(attendees.contains(currentAttendee)){
+
+                shareAttendees = true;
 
                 //Check if you can allocate one before:
                 if(when.start() - lastEventEnd >= requestDuration){
@@ -122,6 +124,13 @@ public final class FindMeetingQuery {
             }
 
         }
+
+    }
+
+    //If none of the given attendees are attending any of the known events:
+    if(!shareAttendees){
+
+        return Arrays.asList(TimeRange.WHOLE_DAY);
 
     }
 
