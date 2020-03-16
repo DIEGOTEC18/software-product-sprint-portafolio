@@ -24,7 +24,6 @@ import java.util.HashSet;
 
 public final class FindMeetingQuery {
 
-//This should return a List<TimeRange> of all the possible TimeRange meetings:
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
 
     ArrayList<TimeRange> possibleTimes = new ArrayList<TimeRange>();
@@ -32,21 +31,9 @@ public final class FindMeetingQuery {
     long requestDuration = request.getDuration();
     Collection<String> requestAtt = request.getAttendees();
 
-    //Print the requirenments:
-    System.out.println("----------->");
-    System.out.println("REQUEST:");
-    System.out.println("duration: " + requestDuration);
-    System.out.println("attendees:");
-    for(String attendee : requestAtt){
-
-        System.out.println(attendee);
-
-    }
-
     //If the request has no attendees, return the whole day:
     if(requestAtt.isEmpty()){
 
-        System.out.println("There are no attendees.");
         return Arrays.asList(TimeRange.WHOLE_DAY);
 
     }
@@ -54,45 +41,33 @@ public final class FindMeetingQuery {
     //Check for meetings that are longer than a day:
     if(requestDuration > TimeRange.WHOLE_DAY.duration()){
 
-        System.out.println("The requested time is longer than a day.");
         //Return an empty list:
-        //return Arrays.asList();
         return possibleTimes;
 
     }
 
-    //Check every event and split the day into different possible times for the meeting before and after the events:
     Iterator<Event> iterator = events.iterator();
 
-    //I know this index shouldn't exist:
-    int index = 0;
+    //Use the start of the day as the last know event:
     int lastEventEnd = TimeRange.START_OF_DAY;
     boolean shareAttendees = false;
 
+    //Iterate all the known events:
     while (iterator.hasNext()) {
 
         Event currentEvent = iterator.next();
-
-        System.out.println(">-------------<");
-        System.out.println("Index: " + index);
-        System.out.println(currentEvent.getWhen().start());
-
-        /*if(iterator.hasNext()){
-
-            System.out.println(iterator.next().getWhen().start());
-
-        }*/
         
         TimeRange when = currentEvent.getWhen();
         Set<String> attendees = currentEvent.getAttendees();
 
+        //Check if the current event shares any attendee with the request for meeting:
         for(String currentAttendee : requestAtt){
 
             if(attendees.contains(currentAttendee)){
 
                 shareAttendees = true;
 
-                //Check if you can allocate one before:
+                //Check if you can allocate the meeting before:
                 if(when.start() - lastEventEnd >= requestDuration){
 
                     TimeRange possibleBefore = TimeRange.fromStartEnd(lastEventEnd, when.start(), false);
@@ -100,25 +75,40 @@ public final class FindMeetingQuery {
 
                 }
 
-                //Check if its the last one of the day:
+                //Check if its the last event of the day:
                 if(!iterator.hasNext()){
 
+                    //Check if you can allocate a meeting between the last event and the end of the day:
                     if(TimeRange.END_OF_DAY - when.end() >= requestDuration){
 
-                        TimeRange possibleAfter = TimeRange.fromStartEnd(when.end(), TimeRange.END_OF_DAY, true);
-                        possibleTimes.add(possibleAfter);
+                        //Check for nested events:
+                        if(lastEventEnd < when.end()){
+
+                            TimeRange possibleAfter = TimeRange.fromStartEnd(when.end(), TimeRange.END_OF_DAY, true);
+                            possibleTimes.add(possibleAfter);
+
+                        } else {
+
+                            TimeRange possibleAfter = TimeRange.fromStartEnd(lastEventEnd, TimeRange.END_OF_DAY, true);
+                            possibleTimes.add(possibleAfter);
+
+                        }
 
                     }
 
                 } else {
 
                     //Its not the last one of the day:
-                    lastEventEnd = when.end();
+                    //Check for nested events too:
+                    if(lastEventEnd < when.end()){
+
+                       lastEventEnd = when.end();
+
+                    }
 
                 }
 
-                index++;
-
+                //Avoid repeating this process for the same event when more than one attendee is shared:
                 break;
 
             }
@@ -133,8 +123,6 @@ public final class FindMeetingQuery {
         return Arrays.asList(TimeRange.WHOLE_DAY);
 
     }
-
-    //throw new UnsupportedOperationException("TODO: Implement this method.");
 
     return possibleTimes;
 
