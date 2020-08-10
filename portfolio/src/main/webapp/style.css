@@ -584,3 +584,24 @@ body {
     margin-left: auto;
 
 }
+
+.comment-score .tooltiptext {
+  visibility: hidden;
+  width: 180px;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  margin-top: 25px;
+  margin-left: -60px;
+
+}
+
+.comment-score:hover .tooltiptext {
+  visibility: visible;
+}

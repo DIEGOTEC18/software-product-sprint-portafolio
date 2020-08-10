@@ -37,8 +37,7 @@ public class AuthServlet extends HttpServlet {
       String urlToRedirectToAfterUserLogsIn = "/#comment-button-div";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 
-      response.getWriter().println("<p>Hello stranger.</p>");
-      response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
+      response.sendRedirect(loginUrl);
 
     }
   }

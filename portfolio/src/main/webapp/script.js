@@ -63,12 +63,14 @@ function commentElement(username, message, date, score, emoji){
     let commentFooter = document.createElement('div');
     let commentScore = document.createElement('a');
     let commentEmoji = document.createElement('a');
+    let commentScoreTooltip = document.createElement('span');
 
     userHead.text = username;
     dateHead.text = date;
     commentText.innerText = message;
     commentScore.text = "Positivity score: " + score.toFixed(2);
     commentEmoji.text = emoji;
+    commentScoreTooltip.innerText = "The sentiment analysis score goes from -1.0 (really negative) to 1.0 (really positive) with 0 being neutral.";
 
     dateDiv.className = "comment-date-div";
     textDiv.className = "comment-text-div";
@@ -80,6 +82,7 @@ function commentElement(username, message, date, score, emoji){
     commentFooter.className = "comment-footer";
     commentScore.className = "comment-score trebuchet white-text";
     commentEmoji.className = "comment-emoji";
+    commentScoreTooltip.className = "tooltiptext";
 
     dateDiv.appendChild(dateHead);
     textDiv.appendChild(commentText);
@@ -88,6 +91,7 @@ function commentElement(username, message, date, score, emoji){
     commentHeader.appendChild(dateDiv);
     commentFooter.appendChild(commentEmoji);
     commentFooter.appendChild(commentScore);
+    commentScore.appendChild(commentScoreTooltip);
 
     divElement.appendChild(commentHeader);
     divElement.appendChild(textDiv);
