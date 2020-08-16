@@ -105,19 +105,11 @@ function getUser(){
 
     fetch("/auth").then(response => {
 
-        console.log(response);
-
-        console.log(response.type);
-
         const contentType = response.headers.get("content-type");
-
-        console.log(contentType);
 
         if (contentType && contentType.indexOf("application/json;charset=utf-8") !== -1) {
 
             response.json().then(user => {
-
-                console.log(user);
 
                 //Build the user's comment section:
                 buildUser(user.email, user.logoutUrl);
@@ -125,8 +117,6 @@ function getUser(){
             })
 
         } else if (contentType && contentType.indexOf("text/html") !== -1) {
-
-            console.log(response.url);
 
             window.location.href = response.url;
 
@@ -142,5 +132,6 @@ function buildUser(user_email, user_logout){
     document.getElementById("user-logout").href = user_logout;
 
     document.getElementById("form-div").style.display = "block";
+    document.getElementById("comment-button-div").style.display = "none";
 
 }
