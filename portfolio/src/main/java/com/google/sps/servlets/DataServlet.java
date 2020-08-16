@@ -34,6 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import com.google.gson.Gson;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
@@ -81,41 +83,56 @@ public class DataServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        LocalDate messageDate = LocalDate.now();
+        UserService userService = UserServiceFactory.getUserService();
 
-        String username = request.getParameter("username");
-        //Sanitize user input with Jsoup. Cleans user input from any <html> tag. Leaves any plain text intact:
-        String message = Jsoup.clean(request.getParameter("message"), Whitelist.none());
-        String date = messageDate.toString();
+        if (userService.isUserLoggedIn()){
 
-        //Prevents users from posting empty comments by checking the length of the username and message Strings:
-        if(username.length() > 1 && message.length() > 1){
+            LocalDate messageDate = LocalDate.now();
 
-            //Get the sentiment score:
-            float score = getCommentSentiment(message);
+            String username = request.getParameter("username");
+            //Sanitize user input with Jsoup. Cleans user input from any <html> tag. Leaves any plain text intact:
+            String message = Jsoup.clean(request.getParameter("message"), Whitelist.none());
+            String date = messageDate.toString();
+            String email = userService.getCurrentUser().getEmail();
 
-            //Get emoji based on score:
+            //Prevents users from posting empty comments by checking the length of the username and message Strings:
+            if(username.length() > 1 && message.length() > 1){
 
-            String emoji = emojify(score);
+                //Get the sentiment score:
+                float score = getCommentSentiment(message);
 
-            //Get a datastore instance:
-            DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+                //Get emoji based on score:
 
-            //Create a Comment Entity with the values of the request:
-            Entity commentEntity = new Entity("Comment");
-            commentEntity.setProperty("username", username);
-            commentEntity.setProperty("message", message);
-            commentEntity.setProperty("date", date);
-            commentEntity.setProperty("score", score);
-            commentEntity.setProperty("emoji", emoji);
+                String emoji = emojify(score);
 
-            //Put the Entity in the datastore:
-            datastore.put(commentEntity);
+                //Get a datastore instance:
+                DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+                //Create a Comment Entity with the values of the request:
+                Entity commentEntity = new Entity("Comment");
+                commentEntity.setProperty("username", username);
+                commentEntity.setProperty("email", email);
+                commentEntity.setProperty("message", message);
+                commentEntity.setProperty("date", date);
+                commentEntity.setProperty("score", score);
+                commentEntity.setProperty("emoji", emoji);
+
+                //Put the Entity in the datastore:
+                datastore.put(commentEntity);
+
+            }
+
+            // Redirect back to the HTML page.
+            response.sendRedirect("/index.html");
+
+        } else {
+
+            String urlToRedirectToAfterUserLogsIn = "/#comment-button-div";
+            String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
+
+            response.sendRedirect(loginUrl);
 
         }
-
-        // Redirect back to the HTML page.
-        response.sendRedirect("/index.html");
 
     }
 

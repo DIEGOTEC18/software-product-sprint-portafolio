@@ -63,12 +63,14 @@ function commentElement(username, message, date, score, emoji){
     let commentFooter = document.createElement('div');
     let commentScore = document.createElement('a');
     let commentEmoji = document.createElement('a');
+    let commentScoreTooltip = document.createElement('span');
 
     userHead.text = username;
     dateHead.text = date;
     commentText.innerText = message;
     commentScore.text = "Positivity score: " + score.toFixed(2);
     commentEmoji.text = emoji;
+    commentScoreTooltip.innerText = "The sentiment analysis score goes from -1.0 (really negative) to 1.0 (really positive) with 0 being neutral.";
 
     dateDiv.className = "comment-date-div";
     textDiv.className = "comment-text-div";
@@ -80,6 +82,7 @@ function commentElement(username, message, date, score, emoji){
     commentFooter.className = "comment-footer";
     commentScore.className = "comment-score trebuchet white-text";
     commentEmoji.className = "comment-emoji";
+    commentScoreTooltip.className = "tooltiptext";
 
     dateDiv.appendChild(dateHead);
     textDiv.appendChild(commentText);
@@ -88,11 +91,47 @@ function commentElement(username, message, date, score, emoji){
     commentHeader.appendChild(dateDiv);
     commentFooter.appendChild(commentEmoji);
     commentFooter.appendChild(commentScore);
+    commentScore.appendChild(commentScoreTooltip);
 
     divElement.appendChild(commentHeader);
     divElement.appendChild(textDiv);
     divElement.appendChild(commentFooter);
 
     return divElement;
+
+}
+
+function getUser(){
+
+    fetch("/auth").then(response => {
+
+        const contentType = response.headers.get("content-type");
+
+        if (contentType && contentType.indexOf("application/json;charset=utf-8") !== -1) {
+
+            response.json().then(user => {
+
+                //Build the user's comment section:
+                buildUser(user.email, user.logoutUrl);
+
+            })
+
+        } else if (contentType && contentType.indexOf("text/html") !== -1) {
+
+            window.location.href = response.url;
+
+        }
+
+    })
+
+}
+
+function buildUser(user_email, user_logout){
+
+    document.getElementById("user-email-greeting").innerText = "Logged in as " + user_email;
+    document.getElementById("user-logout").href = user_logout;
+
+    document.getElementById("form-div").style.display = "block";
+    document.getElementById("comment-button-div").style.display = "none";
 
 }
